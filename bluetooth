@@ -1,0 +1,21 @@
+#!/bin/bash
+set -e
+
+echo "Executing bluetooth script...|$ACTION|" >> /var/log/bluetooth_dev
+
+ACTION=$(expr "$ACTION" : "\([a-zA-Z]\+\).*")
+if [ "$ACTION" = "add" ]; then
+  # TODO: fix execution of mplayer from udev
+  # speech.sh "device connected"
+
+  # turn off BT discover mode
+  bluetoothctl discoverable off
+fi
+
+if [ "$ACTION" = "remove" ]; then
+  # TODO: see above
+  # speech.sh "device disconnected"
+
+  # turn on bluetooth discovery if device disconnects
+  bluetoothctl discoverable on
+fi

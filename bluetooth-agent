@@ -1,0 +1,33 @@
+#! /bin/sh
+### BEGIN INIT INFO
+# Provides: bluetooth-agent
+# Required-Start: $remote_fs $syslog bluetooth pulseaudio
+# Required-Stop: $remote_fs $syslog
+# Default-Start: 2 3 4 5
+# Default-Stop: 0 1 6
+# Short-Description: Makes Bluetooth discoverable and connectable
+# Description: Start Bluetooth-Agent at boot time.
+### END INIT INFO
+USER=root
+HOME=/root
+export USER HOME
+case "$1" in
+  start)
+    echo "setting bluetooth discoverable"
+    bluetoothctl discoverable on
+    echo "starting daemon"
+    start-stop-daemon -S -c pi -b \
+      --make-pidfile --pidfile /var/run/bt-agent.pid \
+      --startas /bin/bash -- -c "exec bt-agent -c NoInputNoOutput > /tmp/bt-agent.log 2>&1"
+    echo "bluetooth-agent started"
+    ;;
+  stop)
+    echo "stopping bluetooth-agent"
+    start-stop-daemon -K -s 9 --pidfile /var/run/bt-agent.pid
+    ;;
+  *)
+    echo "Usage: /etc/init.d/bluetooth-agent {start|stop}"
+    exit 1
+    ;;
+esac
+exit 0
