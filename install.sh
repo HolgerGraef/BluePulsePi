@@ -44,6 +44,9 @@ check_overwrite "$RULES_FILE"
 UDEV_SCRIPT_FILE="/usr/lib/udev/bluetooth"
 check_overwrite "$UDEV_SCRIPT_FILE"
 
+SERVICE_FILE="/etc/systemd/system/bluetooth-attach@.service"
+check_overwrite "$SERVICE_FILE"
+
 INIT_SCRIPT_FILE="/etc/init.d/bluetooth-agent"
 check_overwrite "$INIT_SCRIPT_FILE"
 
@@ -61,10 +64,13 @@ echo "class 0x20041C" >> $CONFIG_FILE
 
 echo "Setting up $RULES_FILE..."
 echo 'SUBSYSTEM=="input", GROUP="input", MODE="0660"' >> $RULES_FILE
-echo 'KERNEL=="input[0-9]*", RUN+="/usr/lib/udev/bluetooth"' >> $RULES_FILE
+echo 'KERNEL=="input[0-9]*", TAG+="systemd", ENV{SYSTEMD_WANTS}="bluetooth-attach@%n.service"' >> $RULES_FILE
 
 echo "Setting up $UDEV_SCRIPT_FILE..."
 cp bluetooth $UDEV_SCRIPT_FILE
+
+echo "Setting up $SERVICE_FILE"
+cp bluetooth-attach.service $SERVICE_FILE
 
 echo "Setting up $INIT_SCRIPT_FILE"
 cp bluetooth-agent $INIT_SCRIPT_FILE
@@ -73,5 +79,9 @@ echo "Setting up $SPEECH_SCRIPT_FILE"
 cp speech.sh $SPEECH_SCRIPT_FILE
 
 update-rc.d bluetooth-agent defaults
+
+udevadm control --reload-rules && udevadm trigger
+
+systemctl daemon-reload
 
 # TODO: update /etc/bluetooth/main.conf with correct name and class

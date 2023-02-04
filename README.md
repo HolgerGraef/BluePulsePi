@@ -74,7 +74,7 @@ udevadm monitor --environment
 ### view logs with syslog
 
 ```sh
-cat /var/log/syslog | less
+tail -f /var/log/syslog
 ```
 
 Then SHIFT+F to scroll to the end and wait for new input.
@@ -82,3 +82,5 @@ Then SHIFT+F to scroll to the end and wait for new input.
 ## References
 
 - https://www.instructables.com/Turn-your-Raspberry-Pi-into-a-Portable-Bluetooth-A/
+- https://linuxembedded.fr/2018/03/kernel-udev-et-systemd-la-gestion-du-hotplug
+- https://flatcar-linux.org/docs/latest/setup/systemd/udev-rules/

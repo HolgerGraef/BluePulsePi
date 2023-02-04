@@ -1,0 +1,9 @@
+[Unit]
+BindsTo=sys-devices-virtual-input-input%i.device
+After=sys-devices-virtual-input-input%i.device
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/bin/speech.sh 'Connected'
+ExecStop=/usr/bin/speech.sh 'Disconnected'
