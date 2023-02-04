@@ -1,17 +1,29 @@
 #!/bin/bash
 set -e
 
-echo "Executing bluetooth script...|$1|" >> /var/log/bluetooth-handler.log
+exec >> /var/log/bluetooth-handler.log
+exec 2>&1
+
+echo "## bluetooth-handler $1 $2"
 
 if [ "$1" = "add" ]; then
-  /usr/bin/speech.sh 'Connected'
+  DEVICE_ID=`cat /sys/devices/virtual/input/input$2/name`
+  DEVICE_ID=`echo "$DEVICE_ID" | sed -e 's/ (AVRCP)//'`
+  echo "$DEVICE_ID" > /var/bluetooth-handler-input$2
+  echo "Device ID: $DEVICE_ID"
+
+  /usr/bin/speech.sh "Connected to $DEVICE_ID"
 
   # turn off BT discover mode
   bluetoothctl discoverable off
 fi
 
 if [ "$1" = "remove" ]; then
-  /usr/bin/speech.sh 'Disconnected'
+  DEVICE_ID=`cat /var/bluetooth-handler-input$2`
+  rm /var/bluetooth-handler-input$2
+  echo "Device ID: $DEVICE_ID"
+
+  /usr/bin/speech.sh "$DEVICE_ID disconnected"
 
   # turn on bluetooth discovery if device disconnects
   bluetoothctl discoverable on

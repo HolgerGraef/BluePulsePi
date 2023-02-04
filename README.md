@@ -57,6 +57,20 @@ cd BluePulsePi
 sudo ./install.sh
 ```
 
+## Logs
+
+### bluetooth-agent
+
+```
+tail -f /tmp/bt-agent.log
+```
+
+### bluetooth-handler
+
+```
+tail -f /var/log/bluetooth-handler.log
+```
+
 ## Debugging udev
 
 ### set log level
