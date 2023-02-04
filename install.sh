@@ -55,7 +55,8 @@ check_overwrite "$SPEECH_SCRIPT_FILE"
 
 #### install
 echo "Setting up $AUDIO_CONF_FILE..."
-cp audio.conf "$AUDIO_CONF_FILE"
+echo "[General]" >> $AUDIO_CONF_FILE
+echo "Enable=Source,Sink,Media,Socket" >> $AUDIO_CONF_FILE
 
 echo "Setting up $CONFIG_FILE..."
 # TODO: device name should be a parameter

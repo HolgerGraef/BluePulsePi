@@ -77,8 +77,6 @@ udevadm monitor --environment
 tail -f /var/log/syslog
 ```
 
-Then SHIFT+F to scroll to the end and wait for new input.
-
 ## References
 
 - https://www.instructables.com/Turn-your-Raspberry-Pi-into-a-Portable-Bluetooth-A/
