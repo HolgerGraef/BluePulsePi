@@ -1,0 +1,18 @@
+#!/bin/bash
+set -e
+
+echo "Executing bluetooth script...|$1|" >> /var/log/bluetooth-handler.log
+
+if [ "$1" = "add" ]; then
+  /usr/bin/speech.sh 'Connected'
+
+  # turn off BT discover mode
+  bluetoothctl discoverable off
+fi
+
+if [ "$1" = "remove" ]; then
+  /usr/bin/speech.sh 'Disconnected'
+
+  # turn on bluetooth discovery if device disconnects
+  bluetoothctl discoverable on
+fi

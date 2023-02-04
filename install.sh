@@ -41,8 +41,8 @@ check_overwrite "$AUDIO_CONF_FILE"
 RULES_FILE="/etc/udev/rules.d/99-input.rules"
 check_overwrite "$RULES_FILE"
 
-UDEV_SCRIPT_FILE="/usr/lib/udev/bluetooth"
-check_overwrite "$UDEV_SCRIPT_FILE"
+HANDLER_SCRIPT_FILE="/usr/lib/bluetooth-handler"
+check_overwrite "$HANDLER_SCRIPT_FILE"
 
 SERVICE_FILE="/etc/systemd/system/bluetooth-attach@.service"
 check_overwrite "$SERVICE_FILE"
@@ -67,8 +67,8 @@ echo "Setting up $RULES_FILE..."
 echo 'SUBSYSTEM=="input", GROUP="input", MODE="0660"' >> $RULES_FILE
 echo 'KERNEL=="input[0-9]*", TAG+="systemd", ENV{SYSTEMD_WANTS}="bluetooth-attach@%n.service"' >> $RULES_FILE
 
-echo "Setting up $UDEV_SCRIPT_FILE..."
-cp bluetooth $UDEV_SCRIPT_FILE
+echo "Setting up $HANDLER_SCRIPT_FILE..."
+cp bluetooth-handler $HANDLER_SCRIPT_FILE
 
 echo "Setting up $SERVICE_FILE"
 cp bluetooth-attach.service $SERVICE_FILE
