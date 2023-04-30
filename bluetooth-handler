@@ -12,7 +12,7 @@ if [ "$1" = "add" ]; then
   echo "$DEVICE_ID" > /var/bluetooth-handler-input$2
   echo "Device ID: $DEVICE_ID"
 
-  /usr/bin/speech.sh "Connected to $DEVICE_ID"
+  sudo -H -u pi XDG_RUNTIME_DIR=/run/user/1000 /usr/bin/speech.sh "Connected to $DEVICE_ID"
 
   # turn off BT discover mode
   bluetoothctl discoverable off
@@ -23,7 +23,7 @@ if [ "$1" = "remove" ]; then
   rm /var/bluetooth-handler-input$2
   echo "Device ID: $DEVICE_ID"
 
-  /usr/bin/speech.sh "$DEVICE_ID disconnected"
+  sudo -H -u pi XDG_RUNTIME_DIR=/run/user/1000 /usr/bin/speech.sh "$DEVICE_ID disconnected"
 
   # turn on bluetooth discovery if device disconnects
   bluetoothctl discoverable on
